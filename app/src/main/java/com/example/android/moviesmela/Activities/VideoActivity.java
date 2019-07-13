@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.android.moviesmela.Adapters.VideoAdapter;
-import com.example.android.moviesmela.MovieItem;
+import com.example.android.moviesmela.Model.MovieItem;
 import com.example.android.moviesmela.R;
 import com.example.android.moviesmela.ViewModels.MovieViewModel;
 
@@ -24,6 +26,7 @@ public class VideoActivity extends AppCompatActivity implements VideoAdapter.OnI
     RecyclerView videoRecycler;
     VideoAdapter videoAdapter;
     String videoCode;
+    ProgressBar loadingIndicator;
 
     String movieId;
 
@@ -34,6 +37,9 @@ public class VideoActivity extends AppCompatActivity implements VideoAdapter.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        loadingIndicator = findViewById(R.id.video_loading);
+        loadingIndicator.setVisibility(View.VISIBLE);
+
         //Initializing the Video RecyclerView
         videoRecycler = findViewById(R.id.videos);
         videoRecycler.setHasFixedSize(true);
@@ -43,6 +49,8 @@ public class VideoActivity extends AppCompatActivity implements VideoAdapter.OnI
         Intent intent = getIntent();
         if (intent.hasExtra("id")){
             movieId = intent.getStringExtra("id");
+            String movieName = intent.getStringExtra("name");
+            setTitle(movieName);
         }
 
         //Initializing the ViewModel class to get reviews list
@@ -52,6 +60,7 @@ public class VideoActivity extends AppCompatActivity implements VideoAdapter.OnI
             public void onChanged(List<MovieItem> movieItems) {
 
                 if (movieItems!= null){
+                    loadingIndicator.setVisibility(View.GONE);
                     Log.e(TAG,"full list");
                     videoAdapter = new VideoAdapter(VideoActivity.this, VideoActivity.this,movieItems);
                     videoRecycler.setAdapter(videoAdapter);

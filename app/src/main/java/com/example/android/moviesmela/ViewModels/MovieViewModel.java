@@ -3,7 +3,7 @@ package com.example.android.moviesmela.ViewModels;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.android.moviesmela.MovieItem;
+import com.example.android.moviesmela.Model.MovieItem;
 import com.example.android.moviesmela.Repository;
 
 import java.util.List;

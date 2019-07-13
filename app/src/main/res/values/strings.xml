@@ -16,8 +16,11 @@
     <string name="watch_videos">Watch Videos</string>
     <string name="youtube">YouTube</string>
     <string name="favorite">Favorite</string>
+    <string name="offline_warning">You Are Offline</string>
+    <string name="remove">remove</string>
     <string-array name="sort_types">
         <item>Most Popular</item>
         <item>Top Rated</item>
+        <item>Favorites</item>
     </string-array>
 </resources>

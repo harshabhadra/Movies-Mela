@@ -1,6 +1,9 @@
 package com.example.android.moviesmela.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,9 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.moviesmela.Adapters.ReviewAdapter;
-import com.example.android.moviesmela.Adapters.VideoAdapter;
-import com.example.android.moviesmela.MovieItem;
+import com.example.android.moviesmela.Model.FavlistItem;
+import com.example.android.moviesmela.Model.MovieItem;
 import com.example.android.moviesmela.R;
+import com.example.android.moviesmela.ViewModels.FavViewModel;
 import com.example.android.moviesmela.ViewModels.MovieViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -34,22 +38,29 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView releaseDate;
     TextView averageRating;
     TextView overview;
+    TextView reviewLabel;
     Button videoButton;
 
     RecyclerView reviewRecycler;
     ReviewAdapter reviewAdapter;
     MovieViewModel viewModel;
+    FavViewModel favViewModel;
 
     String movieId;
     int rating;
     String title, avgRating, summary, date;
     String photo;
+    boolean isFav = false;
+
+    ConnectivityManager connectivityManager;
+    NetworkInfo networkInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+        reviewLabel = findViewById(R.id.reviewTv);
         movieTitle = findViewById(R.id.movie_title);
         releaseDate = findViewById(R.id.release_date);
         averageRating = findViewById(R.id.rating);
@@ -63,6 +74,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         //Initializing the ViewModel class
         viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+
+        //Initializing fav view model
+        favViewModel = ViewModelProviders.of(this).get(FavViewModel.class);
+
+        //Checking the network state
+        connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
 
         //Getting details about movie via parcelable intent
         Intent intent = getIntent();
@@ -86,18 +106,45 @@ public class MovieDetailsActivity extends AppCompatActivity {
             averageRating.setText(avgRating);
             overview.setText(summary);
 
+        }else if (intent.hasExtra("fav")){
+            isFav = true;
+            FavlistItem favlistItem = intent.getParcelableExtra("fav");
+
+            movieId = favlistItem.getMovieId();
+            title = favlistItem.getMovieName();
+            rating = favlistItem.getAverageRating();
+            avgRating = rating + "/10";
+            photo = favlistItem.getMoviePosterUrl();
+            summary = favlistItem.getMovieDetails();
+            date = favlistItem.getReleaseDate();
+
+            movieTitle.setText(title);
+            Picasso.get().load(photo).into(photoImage);
+            averageRating.setText(avgRating);
+            overview.setText(summary);
+            releaseDate.setText(date);
         }
-        videoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                //Sending the movieId to VideoActivity via Intent
-                Intent intent = new Intent(MovieDetailsActivity.this, VideoActivity.class);
-                intent.putExtra("id", movieId);
-                startActivity(intent);
-            }
-        });
+        if (networkInfo != null && networkInfo.isConnected()) {
+            loadReviews();
+            videoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    //Sending the movieId to VideoActivity via Intent
+                    Intent intent = new Intent(MovieDetailsActivity.this, VideoActivity.class);
+                    intent.putExtra("id", movieId);
+                    intent.putExtra("name", title);
+                    startActivity(intent);
+                }
+            });
+        }else {
+            reviewLabel.setVisibility(View.GONE);
+            videoButton.setText(getResources().getString(R.string.offline_warning));
+        }
+    }
+
+    private void loadReviews(){
         //Getting the reviews list
         viewModel.getReviewList(movieId,getResources().getString(R.string.api_key)).observe(this, new Observer<List<MovieItem>>() {
             @Override
@@ -111,21 +158,26 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_details, menu);
-        return true;
+        if (!isFav) {
+            getMenuInflater().inflate(R.menu.menu_details, menu);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int itemId = item.getItemId();
-        if (itemId == R.id.fav){
+        if (itemId == R.id.add){
+            FavlistItem favlistItem = new FavlistItem(rating,movieId,title,photo,summary,date);
+            favViewModel.insertMovie(favlistItem);
             Toast.makeText(getApplicationContext(),"Added to Favorites",Toast.LENGTH_SHORT).show();
+            item.setVisible(false);
         }
         return super.onOptionsItemSelected(item);
     }
