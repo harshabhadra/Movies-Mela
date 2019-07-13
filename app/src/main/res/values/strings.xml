@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">MoviesMela</string>
+    <string name="api_key">5e1c576128055caa4e6c32b19525b6bc</string>
+    <string name="empty">empty list</string>
+    <string name="sort_by">Sort By</string>
+    <string name="popular">popular</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="top_movies">Top Rated Movies</string>
+    <string name="sort_movies">Sort Movies By</string>
+    <string name="release_date">Release Date</string>
+    <string name="average_rating">Average Rating</string>
+    <string name="summary">Summary</string>
+    <string name="traliers_behind_the_scenes">Traliers, Behind The Scenes</string>
+    <string name="watch_video">Watch Video</string>
+    <string name="reviews">Reviews</string>
+    <string name="watch_videos">Watch Videos</string>
+    <string name="youtube">YouTube</string>
+    <string name="favorite">Favorite</string>
+    <string-array name="sort_types">
+        <item>Most Popular</item>
+        <item>Top Rated</item>
+    </string-array>
+</resources>
