@@ -57,6 +57,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return null;
     }
 
+    public void addAll(List<MovieItem>items){
+
+        movieItems = items;
+    }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView movieImage;

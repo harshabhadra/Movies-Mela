@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,9 +33,12 @@ import com.example.android.moviesmela.Utility;
 import com.example.android.moviesmela.ViewModels.FavViewModel;
 import com.example.android.moviesmela.ViewModels.MovieViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnItemClickLisetener, FavAdapter.onFavItemClickListener {
+
+    private String TAG = "MainActivity";
 
     RecyclerView movieRecycler;
     MovieAdapter movieAdapter;
@@ -52,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
 
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
+
+    private String KEY_INSTANCE_STATE_RV_POSITION = "recycler_save_state";
+    GridLayoutManager gridLayoutManager;
+    List<MovieItem>movieItemList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +128,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
         //Calculate no. of columns in GridLayout
         int noOfColumns = Utility.calculateNoOfColumns(this, 140);
 
+        gridLayoutManager = new GridLayoutManager(this,noOfColumns);
         //setting movieRecycler
         movieRecycler.setHasFixedSize(true);
-        movieRecycler.setLayoutManager(new GridLayoutManager(this, noOfColumns));
+        movieRecycler.setLayoutManager(gridLayoutManager);
 
         //Setting fav Recycler
-        favRecycler.setLayoutManager(new GridLayoutManager(this, noOfColumns));
+        favRecycler.setLayoutManager(new GridLayoutManager(this,noOfColumns));
         favRecycler.setAdapter(favAdapter);
 
         //Initializing MovieViewModel Class
@@ -144,6 +154,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
             }
         } else {
             loadFavMovies();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.e(TAG, "onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, gridLayoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.e(TAG, "onSaveInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState!= null){
+            Parcelable savedState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
+
+            movieAdapter.addAll(movieItemList);
+            if (savedState!= null){
+                gridLayoutManager.onRestoreInstanceState(savedState);
+            }
         }
     }
 
@@ -177,9 +208,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
                 //Check if the list is null
                 if (movieItems != null) {
 
+                    movieItemList = movieItems;
+
                     //if not hide the progress bar and load movies list
                     loadingIndicator.setVisibility(View.GONE);
-                    movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movieItems);
+                    movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movieItemList);
                     movieRecycler.setAdapter(movieAdapter);
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
