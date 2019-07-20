@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MoviesMela</string>
-    <string name="api_key">30f3bccb9887629e51a30d4a7d4d9dd8</string>
+
+    <string name="api_key">"Enter Your API KEY here"</string>
+    
     <string name="empty">empty list</string>
     <string name="sort_by">Sort By</string>
     <string name="popular">popular</string>
