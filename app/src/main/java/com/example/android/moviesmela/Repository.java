@@ -3,6 +3,7 @@ package com.example.android.moviesmela;
 import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -191,6 +192,7 @@ public class Repository {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.body() != null) {
+                    Log.e("Repository", "Movie list: " + response.body());
                     String json = response.body();
                     try {
                         JSONObject object = new JSONObject(json);
@@ -219,12 +221,15 @@ public class Repository {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    Log.e("Repository", "empty list ");
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
+                Log.e("Repository", "Failed to fetch data ");
             }
         });
     }

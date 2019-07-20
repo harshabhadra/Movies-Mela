@@ -18,17 +18,20 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".Activities.VideoActivity"
-            android:parentActivityName=".Activities.MovieDetailsActivity">
+            android:parentActivityName=".Activities.MovieDetailsActivity"
+            android:configChanges="screenSize|orientation">
         </activity>
         <activity
             android:name=".Activities.MovieDetailsActivity"
             android:parentActivityName=".Activities.MainActivity"
             android:label="Movie Details"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            >
         </activity>
         <activity android:name=".Activities.MainActivity"
             android:launchMode="singleTop"
-            android:label="Movie's Mela">
+            android:label="Movie's Mela"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

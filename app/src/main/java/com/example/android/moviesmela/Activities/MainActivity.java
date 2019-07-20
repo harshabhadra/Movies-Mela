@@ -29,6 +29,7 @@ import com.example.android.moviesmela.Adapters.MovieAdapter;
 import com.example.android.moviesmela.Model.FavlistItem;
 import com.example.android.moviesmela.Model.MovieItem;
 import com.example.android.moviesmela.R;
+import com.example.android.moviesmela.StatefulRecyclerView;
 import com.example.android.moviesmela.Utility;
 import com.example.android.moviesmela.ViewModels.FavViewModel;
 import com.example.android.moviesmela.ViewModels.MovieViewModel;
@@ -40,13 +41,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
 
     private String TAG = "MainActivity";
 
-    RecyclerView movieRecycler;
+    StatefulRecyclerView movieRecycler;
     MovieAdapter movieAdapter;
     MovieViewModel movieViewModel;
     ProgressBar loadingIndicator;
     FavViewModel favViewModel;
 
-    RecyclerView favRecycler;
+    StatefulRecyclerView favRecycler;
     FavAdapter favAdapter;
 
     //Store the path
@@ -58,9 +59,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
 
-    private String KEY_INSTANCE_STATE_RV_POSITION = "recycler_save_state";
     GridLayoutManager gridLayoutManager;
-    List<MovieItem>movieItemList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,27 +156,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.e(TAG, "onSaveInstanceState");
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, gridLayoutManager.onSaveInstanceState());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.e(TAG, "onSaveInstanceState");
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState!= null){
-            Parcelable savedState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
-
-            movieAdapter.addAll(movieItemList);
-            if (savedState!= null){
-                gridLayoutManager.onRestoreInstanceState(savedState);
-            }
-        }
-    }
-
     //Load movies added to favorite list
     private void loadFavMovies() {
         FavViewModel favViewModel = ViewModelProviders.of(MainActivity.this).get(FavViewModel.class);
@@ -185,12 +163,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
             @Override
             public void onChanged(List<FavlistItem> favlistItems) {
                 if (!favlistItems.isEmpty()) {
+                    Log.e(TAG,"Full fav list");
                     loadingIndicator.setVisibility(View.GONE);
                     movieRecycler.setVisibility(View.GONE);
                     favRecycler.setVisibility(View.VISIBLE);
                     favAdapter.setFavlistItems(favlistItems);
                     Toast.makeText(getApplicationContext(), "Swipe Left Or Right To remove Item",Toast.LENGTH_SHORT).show();
                 }else {
+                    Log.e(TAG,"empty fav list");
                     loadingIndicator.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "No Favorite Movies",Toast.LENGTH_SHORT).show();
                 }
@@ -206,15 +186,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
             public void onChanged(List<MovieItem> movieItems) {
 
                 //Check if the list is null
-                if (movieItems != null) {
+                if (!movieItems.isEmpty()) {
 
-                    movieItemList = movieItems;
-
+                    Log.e(TAG,"Full list");
                     //if not hide the progress bar and load movies list
                     loadingIndicator.setVisibility(View.GONE);
-                    movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movieItemList);
+                    movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movieItems);
                     movieRecycler.setAdapter(movieAdapter);
                 } else {
+                    Log.e(TAG,"empty list");
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();
                 }
             }

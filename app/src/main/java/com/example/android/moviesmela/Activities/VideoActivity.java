@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -78,10 +79,15 @@ public class VideoActivity extends AppCompatActivity implements VideoAdapter.OnI
                         videoRecycler.setAdapter(videoAdapter);
 
                     } else {
+                        loadingIndicator.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(),"No videos Available", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "empty list");
                     }
                 }
             });
+        }else {
+            loadingIndicator.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
 
