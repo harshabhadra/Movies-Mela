@@ -33,13 +33,14 @@ import com.example.android.moviesmela.StatefulRecyclerView;
 import com.example.android.moviesmela.Utility;
 import com.example.android.moviesmela.ViewModels.FavViewModel;
 import com.example.android.moviesmela.ViewModels.MovieViewModel;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.OnItemClickLisetener, FavAdapter.onFavItemClickListener {
 
-    private String TAG = "MainActivity";
+    private String TAG = MainActivity.class.getSimpleName();
 
     StatefulRecyclerView movieRecycler;
     MovieAdapter movieAdapter;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.e(TAG,"MainActivity");
         //Initializing recyclerView and progress bar
         movieRecycler = findViewById(R.id.recyclerView);
         loadingIndicator = findViewById(R.id.progressBar);
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
         //setting movieRecycler
         movieRecycler.setHasFixedSize(true);
         movieRecycler.setLayoutManager(gridLayoutManager);
+        movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this);
+        movieRecycler.setAdapter(movieAdapter);
 
         //Setting fav Recycler
         favRecycler.setLayoutManager(new GridLayoutManager(this,noOfColumns));
@@ -148,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
         if (networkInfo != null && networkInfo.isConnected()) {
             if (!path.equals("fav")) {
                 loadMovies();
+                Log.e(TAG,"Movies loaded");
             } else {
                 loadFavMovies();
             }
@@ -180,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
 
     //Load movies by path Popular or top rated
     private void loadMovies() {
+        Log.e(TAG,"loading started");
         //Getting the list of movie items from movieViewModel class
         movieViewModel.getMovieItemsList(path, getResources().getString(R.string.api_key)).observe(this, new Observer<List<MovieItem>>() {
             @Override
@@ -191,8 +197,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.OnIt
                     Log.e(TAG,"Full list");
                     //if not hide the progress bar and load movies list
                     loadingIndicator.setVisibility(View.GONE);
-                    movieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movieItems);
-                    movieRecycler.setAdapter(movieAdapter);
+                    movieAdapter.addAll(movieItems);
                 } else {
                     Log.e(TAG,"empty list");
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.empty), Toast.LENGTH_SHORT).show();

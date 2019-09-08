@@ -13,23 +13,23 @@ import com.example.android.moviesmela.Model.MovieItem;
 import com.example.android.moviesmela.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private LayoutInflater inflater;
-    private List<MovieItem> movieItems;
+    private List<MovieItem> movieItems = new ArrayList<>();
     private OnItemClickLisetener itemClickLisetener;
 
     public interface OnItemClickLisetener{
         void onItemClick(int position);
     }
 
-    public MovieAdapter(Context context,OnItemClickLisetener lisetener,  List<MovieItem> movieItems) {
+    public MovieAdapter(Context context,OnItemClickLisetener lisetener) {
 
         inflater = LayoutInflater.from(context);
         itemClickLisetener = lisetener;
-        this.movieItems = movieItems;
     }
 
     @NonNull
@@ -47,19 +47,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return movieItems.size();
+        if (movieItems != null) {
+            return movieItems.size();
+        }else {
+            return 0;
+        }
     }
 
      public MovieItem getMovieitem(int position){
-        if (movieItems!= null){
+
             return movieItems.get(position);
-        }
-        return null;
     }
 
     public void addAll(List<MovieItem>items){
 
-        movieItems = items;
+        if (items != null) {
+            movieItems = items;
+            notifyDataSetChanged();
+        }
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

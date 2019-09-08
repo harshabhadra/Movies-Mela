@@ -1,8 +1,8 @@
 package com.example.android.moviesmela;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+
 import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
@@ -65,7 +65,7 @@ public final class StatefulRecyclerView
     }
 
     @Override
-    public void setAdapter(RecyclerView.Adapter adapter) {
+    public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
         restorePosition();
     }

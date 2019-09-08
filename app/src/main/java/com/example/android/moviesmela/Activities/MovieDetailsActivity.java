@@ -89,15 +89,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (intent.hasExtra("movie")) {
             MovieItem movieItem = intent.getParcelableExtra("movie");
 
-            movieId = movieItem.getId();
+            if (movieItem != null) {
+                movieId = movieItem.getId();
 
-            title = movieItem.getTitle();
+
+                title = movieItem.getTitle();
 
 
-            date = movieItem.getReleaseDate();
-            summary = movieItem.getOverview();
-            rating = movieItem.getVoteaverage();
-            photo = movieItem.getImageUrl();
+                date = movieItem.getReleaseDate();
+                summary = movieItem.getOverview();
+                rating = movieItem.getVoteaverage();
+                photo = movieItem.getImageUrl();
+            }else {
+                Toast.makeText(getApplicationContext(),"MovieItem is null",Toast.LENGTH_SHORT).show();
+            }
             avgRating = rating + "/10";
 
             Picasso.get().load(photo).into(photoImage);
