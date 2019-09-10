@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">MoviesMela</string>
 
-    <string name="api_key">"30f3bccb9887629e51a30d4a7d4d9dd8"</string>
+    <string name="api_key">"Enter You API key here"</string>
 
     <string name="empty">empty list</string>
     <string name="sort_by">Sort By</string>
     <string name="popular">popular</string>
-    <string name="popular_movies">Popular Movies</string>
-    <string name="top_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_movies">Top Rated</string>
     <string name="sort_movies">Sort Movies By</string>
     <string name="release_date">Release Date</string>
     <string name="average_rating">Average Rating</string>
@@ -32,4 +32,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="see_more">See More</string>
+    <string name="retry">Retry</string>
 </resources>

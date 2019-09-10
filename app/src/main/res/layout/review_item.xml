@@ -23,12 +23,29 @@
             android:background="#000000"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
-        <TextView
-            android:id="@+id/review_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            style="@style/TextAppearance.AppCompat.Body1"/>
+            android:orientation="vertical">
+            <at.blogc.android.views.ExpandableTextView
+                android:id="@+id/review_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                app:animation_duration="750"
+                style="@style/TextAppearance.AppCompat.Body1"/>
+            <Button
+                android:id="@+id/see_more_button"
+                android:layout_width="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:layout_height="wrap_content"
+                android:text="@string/see_more"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

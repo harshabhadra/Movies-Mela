@@ -21,17 +21,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             tools:text="@string/app_name" />
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/watch_video_button"
-            style="@style/TextAppearance.AppCompat.Button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textColor="#FFFFFF"
-            android:background="@color/colorAccent"
-            android:layout_height="match_parent"
-            android:text="@string/youtube" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

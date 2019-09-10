@@ -4,11 +4,7 @@
 
     <item android:id="@+id/add"
         android:title="@string/favorite"
-        android:icon="@drawable/ic_star_border_black_24dp"
+        android:icon="@drawable/ic_favorite_border_black_24dp"
         app:showAsAction="always"/>
-    <item android:id="@+id/remove"
-        android:title="@string/remove"
-        android:icon="@drawable/ic_grade_black_24dp"
-        app:showAsAction="ifRoom"
-        android:visible="false"/>
+
 </menu>

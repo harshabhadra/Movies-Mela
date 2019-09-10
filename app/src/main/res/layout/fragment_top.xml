@@ -5,11 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".TopFragment">
 
+    <ProgressBar
+        android:id="@+id/top_loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/top_retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/retry"
+        android:visibility="gone" />
     <!-- TODO: Update blank fragment layout -->
-   <com.example.android.moviesmela.StatefulRecyclerView
-       android:id="@+id/top_rated_recyclerView"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </com.example.android.moviesmela.StatefulRecyclerView>
+    <com.technoidtintin.android.moviesmela.StatefulRecyclerView
+        android:id="@+id/top_rated_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.technoidtintin.android.moviesmela.StatefulRecyclerView>
 
 </FrameLayout>

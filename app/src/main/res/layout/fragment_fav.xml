@@ -5,11 +5,26 @@
     android:layout_height="match_parent"
     tools:context=".FavFragment">
 
+    <ProgressBar
+        android:id="@+id/fav_loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/fav_retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/retry"
+        android:visibility="gone" />
+
     <!-- TODO: Update blank fragment layout -->
-    <androidx.recyclerview.widget.RecyclerView
+    <com.technoidtintin.android.moviesmela.StatefulRecyclerView
         android:id="@+id/favorite_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+    </com.technoidtintin.android.moviesmela.StatefulRecyclerView>
 
 </FrameLayout>

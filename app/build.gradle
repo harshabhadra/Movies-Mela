@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.example.android.moviesmela"
-        minSdkVersion 22
+        applicationId "com.technoidtintin.android.moviesmela"
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -20,7 +20,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -48,5 +48,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //Expandable textView
-    implementation 'com.ms-square:expandableTextView:0.1.4'
+    implementation 'at.blogc:expandabletextview:1.0.5'
+
+    //implementing swipe decorator
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.2'
 }
