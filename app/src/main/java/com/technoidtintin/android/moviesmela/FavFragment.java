@@ -89,6 +89,8 @@ public class FavFragment extends Fragment implements FavAdapter.onFavItemClickLi
         }).attachToRecyclerView(favRecyclerView);
 
         favViewModel = ViewModelProviders.of(this).get(FavViewModel.class);
+
+        //Getting list of movies from database and populating the recyclerView
         favViewModel.getFavListLiveData().observe(this, new Observer<List<FavlistItem>>() {
             @Override
             public void onChanged(List<FavlistItem> favlistItems) {
